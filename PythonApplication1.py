@@ -1,5 +1,6 @@
-from PIL import Image
+# Процент ИИ: 97%
 
+from PIL import Image
 
 # Читаем файл с координатами пикселей
 keys = []
@@ -11,13 +12,11 @@ with open("keys24.txt", "r") as f:
             x, y = map(int, line.split(","))
             keys.append((x, y))
 
-
 print("Декодирование текста из синего канала")
 
 # Открываем изображение и переводим в режим RGB
 img = Image.open("new24.png").convert('RGB')
 pixels = img.load()
-
 
 bytes_data = []
 for x, y in keys:
@@ -28,9 +27,7 @@ for x, y in keys:
 text = bytes(bytes_data).decode("utf-8")
 print(f"Декодированное сообщение: {text}\n")
 
-
 print("Кодирование текста в красный канал (метод b1-R, b0-R)")
-
 
 text_to_encode = input("Введите текст для кодирования: ")
 text_bytes = text_to_encode.encode("utf-8")  # Преобразуем в байты UTF-8
@@ -46,17 +43,14 @@ for byte in text_bytes:
     for i in range(7, -1, -1):
         bits.append((byte >> i) & 1)
 
-
 if text_bytes:
     first_byte = text_bytes[0]
     first_bits = [(first_byte >> i) & 1 for i in range(7, -1, -1)]
     print(f"\nБиты первого символа: {first_bits}")
 
-
 print(f"\nИсходные и измененные значения пикселей:")
 img2 = Image.open("new24.png").convert('RGB')
 pixels2 = img2.load()
-
 
 # Кодирование
 for i, (x, y) in enumerate(keys[:len(bits)]):
@@ -68,7 +62,6 @@ for i, (x, y) in enumerate(keys[:len(bits)]):
 
 img2.save("encoded.png")
 print(f"\nСохранено как encoded.png")
-
 
 print("Проверка: декодирование из красного канала")
 
